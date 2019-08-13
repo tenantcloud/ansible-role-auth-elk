@@ -1,0 +1,27 @@
+---
+  - name: Create elastalert directory
+    file:
+      path: /etc/ssl/logstash/
+      state: directory
+      mode: 0755
+    become: yes
+
+  - name: Copy logstash config
+    template: src=log.conf dest=/etc/logstash/conf.d
+    become: yes
+
+  - name: Copy kibana config
+    template: src=kibana.yml dest=/etc/kibana
+    become: yes
+
+  - name: Copy ssl config
+    template: src=openssl.cnf dest=/etc/ssl/logstash/
+    become: yes
+
+  - name: Generate crt
+    command: openssl req -new -newkey rsa:2048 -sha1 -days 3650 -nodes -x509 -keyout /etc/ssl/logstash/logstash.key -out /etc/ssl/logstash/logstash.crt -config /etc/ssl/logstash/openssl.cnf
+    become: yes
+
+  - name: Replace elastalert config with password
+    template: src=config.yaml dest=/opt/{{ ea_dir }}
+    become: yes
