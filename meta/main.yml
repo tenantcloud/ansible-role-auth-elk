@@ -1,0 +1,26 @@
+galaxy_info:
+  author: Igor Bronovskyi
+  description: Install Filebeat on testing servers
+  company: "TenantCloud LLC"
+
+  issue_tracker_url: https://github.com/tenantcloud/filebeat/issues
+
+  license: BSD
+
+  min_ansible_version: 2.4
+
+  platforms:
+  - name: Ubuntu
+    versions:
+      - trusty
+      - xenial
+      - bionic
+  - name: Debian
+    versions:
+    - jessie
+    - stretch
+
+  galaxy_tags:
+    - filebeat
+    - elk
+    - tenantcloud
