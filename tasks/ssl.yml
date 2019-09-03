@@ -9,6 +9,7 @@
   - file:
       path: /etc/logstash/conf.d
       state: absent
+
   - file:
       path: /etc/logstash/conf.d
       state: directory
@@ -24,3 +25,19 @@
   - name: Replace elastalert config with password
     template: src=config.yaml dest=/opt/{{ ea_dir }}
     become: yes
+
+  - name: Copy openssl config file
+    template: src=logstash.cnf dest=/etc/logstash/ssl
+    become: yes
+
+  - name: Generate certificates
+    shell: openssl req -x509 -batch -nodes -days 3650 -newkey rsa:2048 -keyout logstash.key -out logstash.crt -config logstash.cnf
+    args:
+      chdir: /etc/logstash/ssl
+      executable: /bin/bash
+
+  - name: Generate pkcs8 certificate
+    shell: openssl pkcs8 -in logstash.key -topk8 -out logstash8.key -nocrypt
+    args:
+      chdir: /etc/logstash/ssl
+      executable: /bin/bash
