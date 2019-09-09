@@ -13,3 +13,20 @@ Add this role name to playbook and run:
 
 ```cd /tmp/.ansible/ && ansible-playbook playbook-name.yml```
 
+-------
+
+Variable included in this role:
+
+{{ ea_dir }} - name elastalert directory
+
+-------
+
+Sample playbook-name.yml
+
+- hosts: localhost
+  vars:
+    ea_dir: elastalert
+  become: yes
+  roles:
+    - ansible-role-auth-elk
+
