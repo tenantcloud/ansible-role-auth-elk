@@ -1,32 +1,44 @@
-Ansible role for setup authentication between elasticsearch and logstash
+tenantcloud.ansible_role_auth_elk
 =========
 
-Authentication ELK Stack role. This role include in default terraform scenario for auto-deploy new server.
+Ansible role for setup authentication between elasticsearch and logstash. This role include in default terraform scenario for auto-deploy new server.
 
+Requirements
+------------
+
+ELK Stack, Elastalert, ReadOnlyRest
+
+Role Variables
+--------------
+
+ea_dir: elastalert
+Name elastalert directory
+
+Dependencies
+------------
+
+  - geerlingguy.java
+  - geerlingguy.elasticsearch
+  - geerlingguy.kibana
+  - geerlingguy.logstash
+  - tenantcloud.ansible_role_elastalert
+
+Example Playbook
+----------------
+
+  - hosts: localhost
+    vars:
+      ea_dir: elastalert
+    become: yes
+    roles:
+      - ansible-role-auth-elk
+
+License
 -------
 
-For manual installation this role:
+BSD
 
-```ansible-galaxy install tenantcloud.ansible_role_auth_elk```
+Author Information
+------------------
 
-Add this role name to playbook and run:
-
-```cd /tmp/.ansible/ && ansible-playbook playbook-name.yml```
-
--------
-
-Variable included in this role:
-
-{{ ea_dir }} - name elastalert directory
-
--------
-
-Sample playbook-name.yml
-
-- hosts: localhost
-  vars:
-    ea_dir: elastalert
-  become: yes
-  roles:
-    - ansible-role-auth-elk
-
+TenantCloud DevOps Team
