@@ -26,12 +26,14 @@ Dependencies
 Example Playbook
 ----------------
 
+```yaml
   - hosts: localhost
     vars:
       ea_dir: elastalert
     become: yes
     roles:
       - ansible-role-auth-elk
+```
 
 License
 -------
