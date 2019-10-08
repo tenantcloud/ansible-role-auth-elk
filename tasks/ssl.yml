@@ -1,43 +1,49 @@
 ---
-  - name: Create elastalert directory
-    file:
-      path: /etc/logstash/ssl
-      state: directory
-      mode: 0755
-    become: yes
+- name: Create elastalert directory
+  file:
+    path: /etc/logstash/ssl
+    state: directory
+    mode: 0755
+  become: yes
 
-  - file:
-      path: /etc/logstash/conf.d
-      state: absent
+- file:
+    path: /etc/logstash/conf.d
+    state: absent
 
-  - file:
-      path: /etc/logstash/conf.d
-      state: directory
+- file:
+    path: /etc/logstash/conf.d
+    state: directory
 
-  - name: Copy logstash config
-    template: src=log.conf dest=/etc/logstash/conf.d
-    become: yes
+- name: Copy logstash config
+  template: src=log.conf dest=/etc/logstash/conf.d
+  become: yes
 
-  - name: Copy kibana config
-    template: src=kibana.yml dest=/etc/kibana
-    become: yes
+- name: Copy kibana config
+  template: src=kibana.yml dest=/etc/kibana
+  become: yes
 
-  - name: Replace elastalert config with password
-    template: src=config.yaml dest=/opt/{{ ea_dir }}
-    become: yes
+- name: Replace elastalert config with password
+  template: src=config.yaml dest=/opt/{{ ea_dir }}
+  become: yes
 
-  - name: Copy openssl config file
-    template: src=logstash.cnf dest=/etc/logstash/ssl
-    become: yes
+- name: Copy openssl config file
+  template: src=logstash.cnf dest=/etc/logstash/ssl
+  become: yes
 
-  - name: Generate certificates
-    shell: openssl req -x509 -batch -nodes -days 3650 -newkey rsa:2048 -keyout logstash.key -out logstash.crt -config logstash.cnf
-    args:
-      chdir: /etc/logstash/ssl
-      executable: /bin/bash
+- name: Generate certificates
+  shell: >
+    openssl req -x509 -batch -nodes -days 3650
+    -newkey rsa:2048
+    -keyout logstash.key
+    -out logstash.crt
+    -config logstash.cnf
 
-  - name: Generate pkcs8 certificate
-    shell: openssl pkcs8 -in logstash.key -topk8 -out logstash8.key -nocrypt
-    args:
-      chdir: /etc/logstash/ssl
-      executable: /bin/bash
+  args:
+    chdir: /etc/logstash/ssl
+    executable: /bin/bash
+
+- name: Generate pkcs8 certificate
+  shell: openssl pkcs8 -in logstash.key -topk8 -out logstash8.key -nocrypt
+  args:
+    chdir: /etc/logstash/ssl
+    executable: /bin/bash
