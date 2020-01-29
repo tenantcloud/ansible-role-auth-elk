@@ -18,6 +18,11 @@
   template: src=log.conf dest=/etc/logstash/conf.d
   become: yes
 
+- name: Copy logstash patterns
+  copy:
+    src: files/patterns
+    dest: /etc/logstash
+
 - name: Copy kibana config
   template: src=kibana.yml dest=/etc/kibana
   become: yes
