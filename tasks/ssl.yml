@@ -6,11 +6,13 @@
     mode: 0755
   become: yes
 
-- file:
+- name: Remove default logstash config directory
+  file:
     path: /etc/logstash/conf.d
     state: absent
 
-- file:
+- name: Create logstash config directory
+  file:
     path: /etc/logstash/conf.d
     state: directory
 
@@ -42,7 +44,6 @@
     -keyout logstash.key
     -out logstash.crt
     -config logstash.cnf
-
   args:
     chdir: /etc/logstash/ssl
     executable: /bin/bash
@@ -52,3 +53,4 @@
   args:
     chdir: /etc/logstash/ssl
     executable: /bin/bash
+
