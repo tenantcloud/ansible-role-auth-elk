@@ -110,7 +110,7 @@ keyUsage = nonRepudiation, digitalSignature, keyEncipherment
 subjectKeyIdentifier=hash
 authorityKeyIdentifier=keyid:always,issuer
 basicConstraints = critical,CA:true
-subjectAltName= IP: "{{ elk_ip }}"
+subjectAltName= IP: "{{ elk_url }}"
 
 [ crl_ext ]
 authorityKeyIdentifier=keyid:always
