@@ -34,7 +34,7 @@
   become: yes
 
 - name: Copy openssl config file
-  template: src=logstash.cnf dest=/etc/logstash/ssl
+  template: src=logstash.cnf.tpl dest=/etc/logstash/ssl/logstash.cnf
   become: yes
 
 - name: Generate certificates

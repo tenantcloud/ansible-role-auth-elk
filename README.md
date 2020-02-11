@@ -30,6 +30,7 @@ Example Playbook
 - hosts: localhost
   vars:
     ea_dir: elastalert
+    elk_url: 194.44.100.100
   become: yes
   roles:
     - ansible-role-auth-elk
