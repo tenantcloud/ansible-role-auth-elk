@@ -1,2 +1,7 @@
 ---
+generate_crt: "openssl req -x509 -batch -nodes -days 3650 \
+    -newkey rsa:2048 \
+    -keyout logstash.key \
+    -out logstash.crt \
+    -config logstash.cnf"
 elk_url: 127.0.0.1

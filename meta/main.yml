@@ -1,3 +1,4 @@
+---
 galaxy_info:
   author: Igor Bronovskyi
   description: Install Filebeat on testing servers
@@ -10,15 +11,15 @@ galaxy_info:
   min_ansible_version: 2.4
 
   platforms:
-  - name: Ubuntu
-    versions:
-      - trusty
-      - xenial
-      - bionic
-  - name: Debian
-    versions:
-    - jessie
-    - stretch
+    - name: Ubuntu
+      versions:
+        - trusty
+        - xenial
+        - bionic
+    - name: Debian
+      versions:
+        - jessie
+        - stretch
 
   galaxy_tags:
     - filebeat
