@@ -1,2 +1,2 @@
 ---
-    - include: ssl.yml
+- include: ssl.yml

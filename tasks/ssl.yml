@@ -4,7 +4,7 @@
     path: /etc/logstash/ssl
     state: directory
     mode: 0755
-  become: yes
+  become: true
 
 - name: Remove default logstash config directory
   file:
@@ -17,8 +17,8 @@
     state: directory
 
 - name: Copy logstash config
-  template: src=log.conf dest=/etc/logstash/conf.d
-  become: yes
+  template: src=log.conf.tpl dest=/etc/logstash/conf.d/log.conf
+  become: true
 
 - name: Copy logstash patterns
   copy:
@@ -26,31 +26,25 @@
     dest: /etc/logstash
 
 - name: Copy kibana config
-  template: src=kibana.yml dest=/etc/kibana
-  become: yes
+  template: src=kibana.yml.tpl dest=/etc/kibana/kibana.yml
+  become: true
 
 - name: Replace elastalert config with password
-  template: src=config.yaml dest=/opt/{{ ea_dir }}
-  become: yes
+  template: src=config.yaml.tpl dest=/opt/{{ ea_dir }}/config.yaml
+  become: true
 
 - name: Copy openssl config file
-  template: src=logstash.cnf dest=/etc/logstash/ssl
-  become: yes
+  template: src=logstash.cnf.tpl dest=/etc/logstash/ssl/logstash.cnf
+  become: true
 
 - name: Generate certificates
-  shell: >
-    openssl req -x509 -batch -nodes -days 3650
-    -newkey rsa:2048
-    -keyout logstash.key
-    -out logstash.crt
-    -config logstash.cnf
+  command: "{{ generate_crt }}"
+  changed_when: false
   args:
     chdir: /etc/logstash/ssl
-    executable: /bin/bash
 
 - name: Generate pkcs8 certificate
-  shell: openssl pkcs8 -in logstash.key -topk8 -out logstash8.key -nocrypt
+  command: "openssl pkcs8 -in logstash.key -topk8 -out logstash8.key -nocrypt"
+  changed_when: false
   args:
     chdir: /etc/logstash/ssl
-    executable: /bin/bash
-
