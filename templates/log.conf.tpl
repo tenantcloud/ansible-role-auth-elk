@@ -126,6 +126,17 @@ filter {
       source => "agent"
     }
   }
+  if [type] == "sns" {
+    grok {
+      patterns_dir => "/etc/logstash/patterns"
+      match => { "message" => "%{SNS}"}
+    }
+    date {
+      match => ["timestamp", "yyyy-MM-dd HH:mm:ss"]
+      timezone => "Europe/Kiev"
+      target => "@timestamp"
+    }
+  }
 }
 
 output {
@@ -213,6 +224,14 @@ output {
     elasticsearch {
       hosts => ["localhost:9200"]
       index => "websocket-%{+YYYY.MM.dd}"
+      user => ["{{ creds[0].username }}"]
+      password => ["{{ creds[0].password }}"]
+    }
+  }
+  if [type] == "sns" {
+    elasticsearch {
+      hosts => ["localhost:9200"]
+      index => "sns-%{+YYYY.MM.dd}"
       user => ["{{ creds[0].username }}"]
       password => ["{{ creds[0].password }}"]
     }
