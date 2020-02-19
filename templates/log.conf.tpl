@@ -133,7 +133,7 @@ filter {
     }
     date {
       match => ["timestamp", "yyyy-MM-dd HH:mm:ss"]
-      timezone => "Europe/Kiev"
+      timezone => "Etc/UTC"
       target => "@timestamp"
     }
   }
