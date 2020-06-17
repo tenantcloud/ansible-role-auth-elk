@@ -144,6 +144,19 @@ filter {
       overwrite => [ "message" ]
     }
   }
+  if [type] == "gss" {
+    grok {
+      match => { "message" => "\[%{TIMESTAMP_ISO8601:timestamp}\] %{DATA:env}\.%{LOGLEVEL:severity}: %{GREEDYDATA:gs_type},%{GREEDYDATA:gs_relation_id},%{GREEDYDATA:gs_index_number},%{GREEDYDATA:gs_query}" }
+    }
+    mutate {
+      convert => ["relation_id", "integer"]
+    }
+    date {
+      match => ["timestamp", "yyyy-MM-dd HH:mm:ss"]
+      timezone => "Etc/UTC"
+      target => "@timestamp"
+    }
+  }
 }
 
 output {
@@ -247,6 +260,14 @@ output {
     elasticsearch {
       hosts => ["localhost:9200"]
       index => "php-fpm-%{+YYYY.MM.dd}"
+      user => ["{{ creds[0].username }}"]
+      password => ["{{ creds[0].password }}"]
+    }
+  }
+  if [type] == "gss" {
+    elasticsearch {
+      hosts => ["localhost:9200"]
+      index => "global-search-%{+YYYY.MM.dd}"
       user => ["{{ creds[0].username }}"]
       password => ["{{ creds[0].password }}"]
     }
