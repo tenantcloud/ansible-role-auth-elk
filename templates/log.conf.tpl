@@ -251,4 +251,12 @@ output {
       password => ["{{ creds[0].password }}"]
     }
   }
+  if [type] == "gss" {
+    elasticsearch {
+      hosts => ["localhost:9200"]
+      index => "global-search-%{+YYYY.MM.dd}"
+      user => ["{{ creds[0].username }}"]
+      password => ["{{ creds[0].password }}"]
+    }
+  }
 }
