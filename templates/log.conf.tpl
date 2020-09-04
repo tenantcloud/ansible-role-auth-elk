@@ -15,6 +15,17 @@ filter {
       overwrite => [ "message" ]
     }
   }
+  if [type] == "job_exceptions" {
+    grok {
+      match => { "message" => "\[%{TIMESTAMP_ISO8601:timestamp}\] %{DATA:env}\.%{DATA:severity}: %{GREEDYDATA:logmessage}" }
+      overwrite => [ "message" ]
+    }
+    date {
+      match => ["timestamp", "yyyy-MM-dd HH:mm:ss"]
+      timezone => "Etc/UTC"
+      target => "@timestamp"
+    }
+  }
   if [type] == "horizon_email" {
     grok {
       match => { "message" => "\[%{TIMESTAMP_ISO8601:logtime}\] %{DATA:env}\.%{DATA:severity}: %{DATA:user_id} %{DATA:email} %{GREEDYDATA:notification}" }
@@ -164,6 +175,14 @@ output {
     elasticsearch {
       hosts => ["localhost:9200"]
       index => "laravel-%{+YYYY.MM.dd}"
+      user => ["{{ creds[0].username }}"]
+      password => ["{{ creds[0].password }}"]
+    }
+  }
+  if [type] == "job_exceptions" {
+    elasticsearch {
+      hosts => ["localhost:9200"]
+      index => "job-exceptions-%{+YYYY.MM.dd}"
       user => ["{{ creds[0].username }}"]
       password => ["{{ creds[0].password }}"]
     }
