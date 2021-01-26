@@ -15,26 +15,40 @@
   file:
     path: /etc/logstash/conf.d
     state: directory
+    mode: 0755
 
 - name: Copy logstash config
-  template: src=log.conf.tpl dest=/etc/logstash/conf.d/log.conf
+  template:
+    src: log.conf.tpl
+    dest: /etc/logstash/conf.d/log.conf
+    mode: 0600
   become: true
 
 - name: Copy logstash patterns
   copy:
     src: files/patterns
     dest: /etc/logstash
+    mode: 0644
 
 - name: Copy kibana config
-  template: src=kibana.yml.tpl dest=/etc/kibana/kibana.yml
+  template:
+    src: kibana.yml.tpl
+    dest: /etc/kibana/kibana.yml
+    mode: 0644
   become: true
 
 - name: Replace elastalert config with password
-  template: src=config.yaml.tpl dest=/opt/{{ ea_dir }}/config.yaml
+  template:
+    src: config.yaml.tpl
+    dest: /opt/{{ ea_dir }}/config.yaml
+    mode: 0644
   become: true
 
 - name: Copy openssl config file
-  template: src=logstash.cnf.tpl dest=/etc/logstash/ssl/logstash.cnf
+  template:
+    src: logstash.cnf.tpl
+    dest: /etc/logstash/ssl/logstash.cnf
+    mode: 0644
   become: true
 
 - name: Generate certificates
