@@ -1,4 +1,7 @@
-tenantcloud.ansible_role_auth_elk
+
+![Lint Ansible Roles](https://github.com/tenantcloud/ansible-role-auth-elk/workflows/Lint%20Ansible%20Roles/badge.svg)
+
+tenantcloud.auth_elk
 =========
 
 Ansible role for setup authentication between elasticsearch and logstash. This role include in default terraform scenario for auto-deploy new server.
@@ -18,9 +21,9 @@ Dependencies
 ------------
 
   - geerlingguy.java
-  - geerlingguy.elasticsearch
-  - geerlingguy.kibana
-  - geerlingguy.logstash
+  - tenantcloud.elasticsearch
+  - tenantcloud.kibana
+  - tenantcloud.logstash
   - tenantcloud.ansible_role_elastalert
 
 Example Playbook
@@ -33,7 +36,7 @@ Example Playbook
     elk_url: 194.44.100.100
   become: yes
   roles:
-    - ansible-role-auth-elk
+    - tenantcloud.auth_elk
 ```
 
 License
